@@ -6,7 +6,7 @@ import { theme } from '../../theme';
 
 const { palette } = theme;
 const appearKeyframes = keyframes({
-  from: { opacity: 0, transform: 'translateX(-20px)' },
+  from: { opacity: 0, transform: 'translateX(20px)' },
   to: { opacity: 1, transform: 'translateX(0)' }
 });
 

@@ -32,6 +32,7 @@ const styles: Record<string, CSSObject> = {
     padding: '2px 4px',
     color: palette.neutral.level1,
     backgroundColor: palette.secondary.main,
+    transition: 'opacity 200ms ease-out',
 
     '@media screen and (min-width: 600px)': {
       display: 'inline-block'
