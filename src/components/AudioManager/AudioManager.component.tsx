@@ -1,9 +1,18 @@
 /** @jsxImportSource @emotion/react */
-import { FC, MutableRefObject, useRef, useEffect, useCallback } from 'react';
+import {
+  FC,
+  ClassAttributes,
+  HTMLAttributes,
+  MutableRefObject,
+  useRef,
+  useEffect,
+  useCallback
+} from 'react';
 import { jsx } from '@emotion/react';
 import { cx } from '@emotion/css';
 
 interface AudioManagerProps {
+  AudioComponent?: FC<ClassAttributes<HTMLAudioElement> & HTMLAttributes<HTMLAudioElement>>
   audioURL: string
   isPlaying: boolean
   setIsLoading: (value: boolean) => void
@@ -18,6 +27,7 @@ interface AudioManagerProps {
 
 const AudioManager: FC<AudioManagerProps> = props => {
   const {
+    AudioComponent = 'audio',
     audioRef: externalRef,
     audioURL,
     isPlaying,
@@ -31,6 +41,7 @@ const AudioManager: FC<AudioManagerProps> = props => {
   } = props;
 
   const internalRef = useRef<HTMLAudioElement | null>(null);
+  const initialRenderRef = useRef<boolean | null>(true);
 
   const actualRef = useCallback((node: HTMLAudioElement) => {
     internalRef.current = node;
@@ -40,6 +51,11 @@ const AudioManager: FC<AudioManagerProps> = props => {
   }, [externalRef]);
 
   useEffect(() => {
+    if (initialRenderRef.current) {
+      initialRenderRef.current = false;
+      return;
+    }
+
     if (internalRef.current) {
       internalRef.current.pause();
       internalRef.current.currentTime = 0;
@@ -57,7 +73,7 @@ const AudioManager: FC<AudioManagerProps> = props => {
   }, [isPlaying]);
 
   return (
-    <audio
+    <AudioComponent
       className={cx('audio-manager', className)}
       css={{
         display: 'none'
